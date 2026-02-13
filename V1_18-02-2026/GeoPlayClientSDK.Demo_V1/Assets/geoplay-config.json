@@ -1,0 +1,7 @@
+{
+  "geoplay_config": {
+    "client_id": "AuroraAndroidClient",
+    "client_secret": "15a6d81d-64b8-41ff-aa20-7496ebac486b",
+    "base_url": "https://dev.{0}.geoplay.io/v1/"
+  }
+}
