@@ -16,7 +16,6 @@ namespace GeoPlaySample.InfiniteRunner
         [SerializeField] private StoreItem defaultStoreItem;
 
         private List<StoreItem> populatedItems = new List<StoreItem>();
-        private bool isShopPopulated = false;
 
         private void OnEnable()
         {
@@ -56,7 +55,6 @@ namespace GeoPlaySample.InfiniteRunner
                         populatedItems.Add(item);
                 }
             }
-            isShopPopulated = true;
         }
 
         private void ClearPopulatedItems()
@@ -103,11 +101,6 @@ namespace GeoPlaySample.InfiniteRunner
         public static int GetSelectedItemId()
         {
             return PlayerPrefs.GetInt(PLAYER_PREF_SELECTED_STORE_ITEM, 0);
-        }
-
-        private bool IsAppInitialized() 
-        {
-            return true;
         }
 
         private void ApplyConfig(GameConfig config)
