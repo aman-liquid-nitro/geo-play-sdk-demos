@@ -21,18 +21,13 @@ namespace GeoPlaySample.InfiniteRunner
         private void OnEnable()
         {
             StoreItem.OnSelectItem += OnSelectStoreItem;
+            GameManager.OnSetGameConfig += ApplyConfig;
         }
 
         private void OnDisable()
         {
             StoreItem.OnSelectItem -= OnSelectStoreItem;
-        }
-
-        private void Start()
-        {
-            InitDefaultItem();
-            if (IsAppInitialized())
-                OnAppInitialized();
+            GameManager.OnSetGameConfig -= ApplyConfig;
         }
 
         private void InitDefaultItem()
@@ -40,16 +35,15 @@ namespace GeoPlaySample.InfiniteRunner
             if (defaultStoreItem)
                 defaultStoreItem.Init(_itemsDB.defaultItem);
 
-            populatedItems.Add(defaultStoreItem);
-        }
-
-        private List<int> FetchStoreItems()
-        {
-            return availableItems;
+            if (!populatedItems.Contains(defaultStoreItem))
+                populatedItems.Add(defaultStoreItem);
         }
 
         public void PopulateAvailableItems()
         {
+            ClearPopulatedItems();
+            InitDefaultItem();
+
             foreach (var itemId in availableItems)
             {
                 StoreItemSO itemSO = _itemsDB.GetItem(itemId);
@@ -65,11 +59,18 @@ namespace GeoPlaySample.InfiniteRunner
             isShopPopulated = true;
         }
 
+        private void ClearPopulatedItems()
+        {
+            foreach (var item in populatedItems)
+            {
+                if (item.ID != 0)
+                    Destroy(item.gameObject);
+            }
+            populatedItems.Clear();
+        }
+
         void OnAppInitialized()
         {
-            if (isShopPopulated) return;
-
-            availableItems = FetchStoreItems();
             PopulateAvailableItems();
             
             // Auto select item in prefs
@@ -107,6 +108,12 @@ namespace GeoPlaySample.InfiniteRunner
         private bool IsAppInitialized() 
         {
             return true;
+        }
+
+        private void ApplyConfig(GameConfig config)
+        {
+            availableItems = config.storeConfig.availableItems;
+            OnAppInitialized();
         }
     }
 }

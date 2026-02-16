@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,11 +14,13 @@ namespace GeoPlaySample.InfiniteRunner
         [Header("Game Over")]
         [SerializeField] private GameObject gameOverPanel;
         [SerializeField] private TextMeshProUGUI gameOverScoreText;
+        [SerializeField] private Button leaderboardButton;
 
         private void Start()
         {
             // Show unpaused game state on start
             OnPause(false);
+            HideGameOverPanel();
         }
 
         public void OnPauseGame()
@@ -54,6 +57,18 @@ namespace GeoPlaySample.InfiniteRunner
         {
             if (gameOverPanel != null)
                 gameOverPanel.SetActive(false);
+        }
+
+        private void UpdateLeadearBoardButtonState(GameConfig config)
+        {
+            if (leaderboardButton == null) return;
+            Feature leaderboardFeatureConfig = config.featuresConfig.features.FirstOrDefault(t => t.id == "leaderboard");
+            leaderboardButton.gameObject.SetActive(leaderboardFeatureConfig == null || leaderboardFeatureConfig.enabled);
+        }
+
+        public void OnSetConfig(GameConfig config)
+        {
+            UpdateLeadearBoardButtonState(config);
         }
     }
 }

@@ -1,12 +1,16 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
+using UnityEngine;
 
 namespace GeoPlaySample.InfiniteRunner
 {
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
+        public static GameConfig GameConfig { get; private set; }
+
+        public static event Action<GameConfig> OnSetGameConfig;
 
         [SerializeField] private GameAttributes gameAttributes;
 
@@ -50,6 +54,7 @@ namespace GeoPlaySample.InfiniteRunner
         void Start()
         {
             CurrentBaseSpeed = initialBaseSpeed;
+            OnSetConfig(GameConfig);
             StartGame();
         }
 
@@ -183,6 +188,24 @@ namespace GeoPlaySample.InfiniteRunner
         public void GotoLeaderBoard()
         { 
             // Leaderboard logic goes here
+        }
+
+        public static void SetDefaultGameConfig()
+        {
+            if (GameConfig == null)
+                SetGameConfig(new GameConfig());
+        }
+
+        public static void SetGameConfig(GameConfig config)
+        {
+            GameConfig = config;
+            Debug.Log($"Config: {JsonUtility.ToJson(GameConfig)}");
+            OnSetGameConfig?.Invoke(GameConfig);
+        }
+
+        private void OnSetConfig(GameConfig config)
+        {
+            gameplayUI.OnSetConfig(config);
         }
     }
 }

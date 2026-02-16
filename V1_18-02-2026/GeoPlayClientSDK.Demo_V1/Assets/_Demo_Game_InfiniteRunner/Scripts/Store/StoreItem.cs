@@ -9,6 +9,7 @@ namespace GeoPlaySample.InfiniteRunner
         [SerializeField] private UnityEngine.UI.Image selectedImage;
 
         private StoreItemSO data;
+        private bool isInit = false;
 
         public int ID => data.id;
 
@@ -16,8 +17,11 @@ namespace GeoPlaySample.InfiniteRunner
 
         public void Init(StoreItemSO data)
         {
+            if (isInit) return;
+
             this.data = data;
             SetItemSprite(data.sprite);
+            isInit = true;
         }
 
         public void SetItemSprite(Sprite spr)
