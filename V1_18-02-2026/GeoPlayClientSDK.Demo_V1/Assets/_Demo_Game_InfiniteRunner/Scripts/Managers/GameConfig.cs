@@ -22,7 +22,7 @@ namespace GeoPlaySample.InfiniteRunner
 
         public StoreConfig()
         {
-            availableItems = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8 };
+            availableItems = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
         }
     }
 
@@ -46,6 +46,8 @@ namespace GeoPlaySample.InfiniteRunner
     {
         public string id;
         public bool enabled;
+
+        public Feature() { }
 
         public Feature(string featureId, bool isEnabled)
         {
