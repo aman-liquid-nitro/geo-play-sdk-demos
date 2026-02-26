@@ -12,6 +12,7 @@ namespace GeoPlaySample.InfiniteRunner
         private void OnEnable()
         {
             GameManager.OnSetGameConfig += OnSetGameConfig;
+            ApplyMenuConfig();
         }
 
         private void OnDisable()
@@ -37,7 +38,7 @@ namespace GeoPlaySample.InfiniteRunner
 
         private void ApplyMenuConfig()
         {
-            if (menuUI == null)
+            if (menuUI == null || GameManager.GameConfig == null)
                 return;
 
             Feature leaderbordFeatureConfig = GameManager.GameConfig.featuresConfig.features.FirstOrDefault(t => t.id == "leaderboard");
